@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test App</title>
+</head>
+
+<body>
+    <div>
+        <h1>Posts</h1>
+        <div>
+            <label for="post">Enter your message: </label>
+            <input type="text" id="input" placeholder="message">
+            <input type="button" id="button" value="Send">
+            <ul class="list" id="list">
+
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        const btn = document.getElementById("button")
+        const input = document.getElementById("input")
+
+        btn.onclick = async () => {
+            const p = await fetch("http://localhost:8080/post?data=" + input.value, {
+                method: 'POST'
+            })
+
+            if (p.ok) {
+                console.log(p.status)
+            } else {
+                console.log(p.status)
+            }
+        }
+
+        window.onload = async () => {
+            const dataJson = await fetch("http://localhost:8080/get_all")
+
+            if (dataJson.ok) {
+                const list = document.getElementById("list")
+                const data = await dataJson.json()
+
+                data.posts.forEach(element => {
+                    const listItem = document.createElement("li")
+                    listItem.textContent = element
+                    list.appendChild(listItem)
+                });
+            } else {
+                console.log(p.status)
+            }
+        }
+    </script>
+</body>
+
+</html>
